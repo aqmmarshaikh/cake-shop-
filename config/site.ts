@@ -1,0 +1,45 @@
+export const siteConfig = {
+  name: "Golden Cake Shop",
+  tagline: "Your Imagination, Our Art",
+  description:
+    "Premium & customised cakes in Patan, Gujarat — wedding cakes, birthday cakes, fondant art & more. Book your dream cake via WhatsApp or call us!",
+  instagram: "https://www.instagram.com/goldencakeshop01",
+  instagramHandle: "@goldencakeshop01",
+  whatsapp: "917874816263",
+  whatsappMessage: "Hi Golden Cake Shop! I'd like to order a custom cake 🎂",
+  email: "goldencakeshop01@gmail.com",
+  phone: "+91 78748 16263",
+  city: "Patan",
+  state: "Gujarat",
+  country: "India",
+  address: "Shree Dev Complex, Post Office Road, Patan, Gujarat – 384265",
+  mapUrl: "https://maps.google.com/?q=23.85257,72.13771",
+  logo: "/images/logo.png",
+  ogImage: "/images/hero-cake.jpg",
+  links: {
+    instagram: "https://www.instagram.com/goldencakeshop01",
+    whatsapp: "https://wa.me/917874816263",
+    maps: "https://maps.google.com/?q=23.85257,72.13771",
+  },
+  cta: {
+    primary: "Book Your Cake",
+    secondary: "Chat on WhatsApp",
+    inquiry: "Send Inquiry",
+  },
+  hours: {
+    weekdays: "9:00 AM – 9:00 PM",
+    weekends: "9:00 AM – 10:00 PM",
+    note: "Open all days including holidays",
+  },
+  delivery: {
+    available: true,
+    areas: ["Patan", "Mehsana", "Becharaji", "Harij", "Radhanpur"],
+    note: "Delivering all over Patan & surrounding areas",
+  },
+  minOrderNotice: "2–3 days advance booking recommended",
+  currency: "₹",
+  coordinates: {
+    lat: 23.85257,
+    lng: 72.13771,
+  },
+};
