@@ -12,7 +12,7 @@ type Category = "all" | "wedding" | "birthday" | "fondant" | "anniversary" | "cu
 const enrichedGallery = [
   { id: 1,  src: "/images/gallery-7.jpg",              category: "birthday"     },
   { id: 2,  src: "/images/wedding-cake.jpg",           category: "wedding"      },
-  { id: 3,  src: "/images/gallery-1.jpg",              category: "birthday"     },
+  { id: 3,  src: "/images/gallery-1-ai.jpg",              category: "birthday"     },
   { id: 4,  src: "/images/fondant-cake.jpg",           category: "fondant"      },
   { id: 5,  src: "/images/gallery-5.jpg",              category: "birthday"     },
   { id: 6,  src: "/images/anniversary-cake.jpg",       category: "anniversary"  },

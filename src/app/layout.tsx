@@ -117,8 +117,8 @@ export default function RootLayout({
               },
               geo: {
                 "@type": "GeoCoordinates",
-                latitude: 23.85257,
-                longitude: 72.13771,
+                latitude: 23.8495,
+                longitude: 72.1377,
               },
               openingHours: ["Mo-Sa 09:00-21:00", "Su 09:00-22:00"],
               image: "/images/hero-cake.jpg",

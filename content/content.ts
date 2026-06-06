@@ -184,7 +184,7 @@ export const faqs = [
 ];
 
 export const galleryImages = [
-  { id: 1, src: "/images/gallery-1.jpg", category: "wedding", captionKey: "gallery.wedding" },
+  { id: 1, src: "/images/gallery-1-ai.jpg", category: "wedding", captionKey: "gallery.wedding" },
   { id: 2, src: "/images/gallery-2.jpg", category: "birthday", captionKey: "gallery.birthday" },
   { id: 3, src: "/images/gallery-3.jpg", category: "fondant", captionKey: "gallery.fondant" },
   { id: 4, src: "/images/gallery-4.jpg", category: "wedding", captionKey: "gallery.wedding2" },

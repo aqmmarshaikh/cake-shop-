@@ -13,13 +13,13 @@ export const siteConfig = {
   state: "Gujarat",
   country: "India",
   address: "Shree Dev Complex, Post Office Road, Patan, Gujarat – 384265",
-  mapUrl: "https://maps.google.com/?q=23.85257,72.13771",
+  mapUrl: "https://maps.app.goo.gl/eegtSGupyrrmsNGo8",
   logo: "/images/logo.png",
   ogImage: "/images/hero-cake.jpg",
   links: {
     instagram: "https://www.instagram.com/goldencakeshop01",
     whatsapp: "https://wa.me/917874816263",
-    maps: "https://maps.google.com/?q=23.85257,72.13771",
+    maps: "https://maps.app.goo.gl/eegtSGupyrrmsNGo8",
   },
   cta: {
     primary: "Book Your Cake",
@@ -39,7 +39,7 @@ export const siteConfig = {
   minOrderNotice: "2–3 days advance booking recommended",
   currency: "₹",
   coordinates: {
-    lat: 23.85257,
-    lng: 72.13771,
+    lat: 23.8495,
+    lng: 72.1377,
   },
 };
