@@ -7,20 +7,27 @@ import Image from "next/image";
 import { useLanguage } from "@/context/LanguageContext";
 import { testimonials } from "@/content/content";
 
+const testimonialImages = [
+  "/images/gallery-5.jpg",
+  "/images/gallery-7.jpg",
+  "/images/gallery-9.jpg",
+  "/images/gallery-1.jpg",
+];
+
+const slideVariants = {
+  enter: (dir: number) => ({ x: dir > 0 ? 60 : -60, opacity: 0 }),
+  center: { x: 0, opacity: 1 },
+  exit:  (dir: number) => ({ x: dir > 0 ? -60 : 60, opacity: 0 }),
+};
+
 export default function Testimonials() {
   const { t } = useLanguage();
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(1);
 
-  const next = () => {
-    setDirection(1);
-    setCurrent((c) => (c + 1) % testimonials.length);
-  };
-
-  const prev = () => {
-    setDirection(-1);
-    setCurrent((c) => (c - 1 + testimonials.length) % testimonials.length);
-  };
+  const next = () => { setDirection(1);  setCurrent((c) => (c + 1) % testimonials.length); };
+  const prev = () => { setDirection(-1); setCurrent((c) => (c - 1 + testimonials.length) % testimonials.length); };
+  const goTo = (i: number) => { setDirection(i > current ? 1 : -1); setCurrent(i); };
 
   const getText = (key: string) => {
     const map: Record<string, string> = {
@@ -32,139 +39,205 @@ export default function Testimonials() {
     return map[key] ?? key;
   };
 
-  const testimonialImages = [
-    "/images/gallery-5.jpg",
-    "/images/gallery-7.jpg",
-    "/images/gallery-9.jpg",
-    "/images/gallery-1.jpg",
-  ];
-
-  const variants = {
-    enter: (dir: number) => ({ x: dir > 0 ? 80 : -80, opacity: 0 }),
-    center: { x: 0, opacity: 1 },
-    exit: (dir: number) => ({ x: dir > 0 ? -80 : 80, opacity: 0 }),
-  };
-
   return (
     <section id="testimonials" className="section-padding relative overflow-hidden">
-      <div className="section-divider absolute top-0 left-0 right-0" />
+      <div className="section-divider" style={{ position: "absolute", top: 0, left: 0, right: 0 }} />
 
-      {/* Background decoration */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute left-0 bottom-0 w-80 h-80 rounded-full opacity-5"
-          style={{ background: "radial-gradient(circle, #f59e0b, transparent)" }} />
+      {/* Ambient glow */}
+      <div aria-hidden="true" style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
+        <div style={{
+          position: "absolute",
+          left: "-5%", bottom: 0,
+          width: "clamp(240px, 35vw, 480px)",
+          aspectRatio: "1",
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(245,158,11,0.055) 0%, transparent 70%)",
+        }} />
       </div>
 
       <div className="container-custom">
-        {/* Header */}
-        <div className="text-center mb-12">
+
+        {/* ── Section Header ── */}
+        <div style={{ textAlign: "center", marginBottom: "var(--section-header)" }}>
           <motion.span
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="badge mb-4 inline-flex"
+            className="badge"
           >
             {t.testimonials.badge}
           </motion.span>
+
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="section-title mb-3"
+            className="section-title"
+            style={{ marginBottom: "var(--space-4)" }}
           >
             {t.testimonials.title}{" "}
             <span className="title-gradient">{t.testimonials.titleHighlight}</span>
           </motion.h2>
+
           <motion.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="text-white/60 max-w-xl mx-auto"
+            className="section-subtitle"
+            style={{ margin: "0 auto" }}
           >
             {t.testimonials.subtitle}
           </motion.p>
         </div>
 
-        {/* Main Testimonial */}
-        <div className="max-w-4xl mx-auto">
-          <div className="relative glass-card p-6 sm:p-10 rounded-3xl overflow-hidden">
-            {/* Quote Icon */}
-            <div className="absolute top-6 right-6 sm:top-8 sm:right-8 text-amber-400/15">
-              <Quote size={60} />
+        {/* ── Main Testimonial Card ── */}
+        <div style={{ maxWidth: "820px", margin: "0 auto" }}>
+          <div
+            className="glass-card"
+            style={{
+              padding: "clamp(1.75rem, 5vw, 3rem)",
+              borderRadius: "var(--radius-2xl)",
+              position: "relative",
+              overflow: "hidden",
+            }}
+          >
+            {/* Decorative quote icon */}
+            <div style={{
+              position: "absolute",
+              top: "var(--space-6)",
+              right: "var(--space-6)",
+              color: "rgba(245,158,11,0.10)",
+              pointerEvents: "none",
+            }}>
+              <Quote size={64} />
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 items-start">
-              {/* Image */}
-              <div className="flex-shrink-0">
-                <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden ring-2 ring-amber-400/30">
+            <div style={{
+              display: "flex",
+              flexDirection: "row",
+              gap: "var(--space-6)",
+              alignItems: "flex-start",
+            }} className="testimonial-inner">
+
+              {/* Avatar */}
+              <div style={{ flexShrink: 0 }}>
+                <div style={{
+                  width: "clamp(56px, 10vw, 72px)",
+                  aspectRatio: "1",
+                  borderRadius: "var(--radius-md)",
+                  overflow: "hidden",
+                  border: "2px solid rgba(245,158,11,0.30)",
+                  boxShadow: "0 4px 16px rgba(0,0,0,0.35)",
+                }}>
                   <Image
                     src={testimonialImages[current] || "/images/gallery-1.jpg"}
                     alt={testimonials[current].name}
-                    fill
-                    className="object-cover"
+                    width={72}
+                    height={72}
+                    style={{ objectFit: "cover", width: "100%", height: "100%" }}
                   />
                 </div>
               </div>
 
               {/* Content */}
-              <div className="flex-grow min-w-0">
+              <div style={{ flex: 1, minWidth: 0 }}>
                 {/* Stars */}
-                <div className="flex gap-1 mb-3">
+                <div style={{ display: "flex", gap: "3px", marginBottom: "var(--space-4)" }}>
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={16} className="text-amber-400 fill-amber-400" />
+                    <Star key={i} size={15} color="#f59e0b" fill="#f59e0b" />
                   ))}
                 </div>
 
-                {/* Text */}
+                {/* Review text */}
                 <AnimatePresence mode="wait" custom={direction}>
                   <motion.p
                     key={current}
                     custom={direction}
-                    variants={variants}
+                    variants={slideVariants}
                     initial="enter"
                     animate="center"
                     exit="exit"
-                    transition={{ duration: 0.4, ease: "easeInOut" }}
-                    className="text-white/80 text-base sm:text-lg leading-relaxed mb-5 italic"
+                    transition={{ duration: 0.38, ease: "easeInOut" }}
+                    style={{
+                      color: "rgba(255,255,255,0.78)",
+                      fontSize: "var(--text-lg)",
+                      lineHeight: 1.75,
+                      fontStyle: "italic",
+                      marginBottom: "var(--space-5)",
+                    }}
                   >
-                    "{getText(testimonials[current].textKey)}"
+                    &ldquo;{getText(testimonials[current].textKey)}&rdquo;
                   </motion.p>
                 </AnimatePresence>
 
-                <div className="flex flex-wrap items-center justify-between gap-3">
+                {/* Attribution */}
+                <div style={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  gap: "var(--space-3)",
+                }}>
                   <div>
-                    <div className="font-bold text-white">{testimonials[current].name}</div>
-                    <div className="text-amber-400/70 text-sm">
-                      {testimonials[current].occasion} • {testimonials[current].location}
+                    <div style={{ fontWeight: 700, color: "var(--color-text)", fontSize: "var(--text-base)" }}>
+                      {testimonials[current].name}
+                    </div>
+                    <div style={{ color: "rgba(245,158,11,0.65)", fontSize: "var(--text-sm)", marginTop: "2px" }}>
+                      {testimonials[current].occasion} · {testimonials[current].location}
                     </div>
                   </div>
-                  <div className="text-white/30 text-sm">{testimonials[current].date}</div>
+                  <div style={{ color: "rgba(255,255,255,0.28)", fontSize: "var(--text-sm)" }}>
+                    {testimonials[current].date}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Navigation */}
-          <div className="flex items-center justify-center gap-4 mt-6">
+          <div style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "var(--space-4)",
+            marginTop: "var(--space-6)",
+          }}>
             <button
               onClick={prev}
-              className="w-10 h-10 rounded-full border border-white/10 bg-white/5 flex items-center justify-center text-white/60 hover:text-amber-400 hover:border-amber-400/30 transition-all"
+              style={{
+                width: "42px", height: "42px",
+                borderRadius: "50%",
+                border: "1px solid rgba(255,255,255,0.10)",
+                background: "rgba(255,255,255,0.04)",
+                color: "rgba(255,255,255,0.55)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                cursor: "pointer",
+                transition: "border-color var(--ease-base), color var(--ease-base), background var(--ease-base)",
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.color = "#fbbf24"; e.currentTarget.style.borderColor = "rgba(245,158,11,0.35)"; e.currentTarget.style.background = "rgba(245,158,11,0.05)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(255,255,255,0.55)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.10)"; e.currentTarget.style.background = "rgba(255,255,255,0.04)"; }}
               aria-label="Previous testimonial"
             >
-              <ChevronLeft size={20} />
+              <ChevronLeft size={18} />
             </button>
 
-            {/* Dots */}
-            <div className="flex gap-2">
+            {/* Dot indicators */}
+            <div style={{ display: "flex", gap: "var(--space-2)", alignItems: "center" }}>
               {testimonials.map((_, i) => (
                 <button
                   key={i}
-                  onClick={() => { setDirection(i > current ? 1 : -1); setCurrent(i); }}
-                  className={`rounded-full transition-all duration-300 ${
-                    i === current ? "w-6 h-2 bg-amber-500" : "w-2 h-2 bg-white/20"
-                  }`}
+                  onClick={() => goTo(i)}
+                  style={{
+                    borderRadius: "var(--radius-full)",
+                    border: "none",
+                    cursor: "pointer",
+                    transition: "all var(--ease-base)",
+                    ...(i === current
+                      ? { width: "24px", height: "8px", background: "#f59e0b" }
+                      : { width: "8px", height: "8px", background: "rgba(255,255,255,0.18)" }),
+                  }}
                   aria-label={`Go to testimonial ${i + 1}`}
                 />
               ))}
@@ -172,43 +245,92 @@ export default function Testimonials() {
 
             <button
               onClick={next}
-              className="w-10 h-10 rounded-full border border-white/10 bg-white/5 flex items-center justify-center text-white/60 hover:text-amber-400 hover:border-amber-400/30 transition-all"
+              style={{
+                width: "42px", height: "42px",
+                borderRadius: "50%",
+                border: "1px solid rgba(255,255,255,0.10)",
+                background: "rgba(255,255,255,0.04)",
+                color: "rgba(255,255,255,0.55)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                cursor: "pointer",
+                transition: "border-color var(--ease-base), color var(--ease-base), background var(--ease-base)",
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.color = "#fbbf24"; e.currentTarget.style.borderColor = "rgba(245,158,11,0.35)"; e.currentTarget.style.background = "rgba(245,158,11,0.05)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(255,255,255,0.55)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.10)"; e.currentTarget.style.background = "rgba(255,255,255,0.04)"; }}
               aria-label="Next testimonial"
             >
-              <ChevronRight size={20} />
+              <ChevronRight size={18} />
             </button>
           </div>
         </div>
 
-        {/* All Mini Cards */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-10">
+        {/* ── Mini Cards Grid ── */}
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(4, 1fr)",
+          gap: "var(--space-4)",
+          marginTop: "var(--space-10)",
+        }} className="testimonial-mini-grid">
           {testimonials.map((t_item, i) => (
             <motion.button
               key={t_item.id}
-              onClick={() => { setDirection(i > current ? 1 : -1); setCurrent(i); }}
+              onClick={() => goTo(i)}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className={`text-left p-4 rounded-2xl border transition-all duration-300 ${
-                i === current
-                  ? "border-amber-400/40 bg-amber-400/5"
-                  : "border-white/5 bg-white/2 hover:border-amber-400/20"
-              }`}
+              transition={{ delay: i * 0.08 }}
+              style={{
+                textAlign: "left",
+                padding: "var(--space-4)",
+                borderRadius: "var(--radius-lg)",
+                cursor: "pointer",
+                transition: "all var(--ease-base)",
+                ...(i === current
+                  ? {
+                      border: "1px solid rgba(245,158,11,0.38)",
+                      background: "rgba(245,158,11,0.05)",
+                    }
+                  : {
+                      border: "1px solid rgba(255,255,255,0.05)",
+                      background: "rgba(255,255,255,0.02)",
+                    }),
+              }}
             >
-              <div className="flex gap-1 mb-2">
+              <div style={{ display: "flex", gap: "2px", marginBottom: "var(--space-2)" }}>
                 {[...Array(5)].map((_, si) => (
-                  <Star key={si} size={10} className="text-amber-400 fill-amber-400" />
+                  <Star key={si} size={9} color="#f59e0b" fill="#f59e0b" />
                 ))}
               </div>
-              <p className="text-white/60 text-xs leading-relaxed mb-2 line-clamp-2">
-                "{getText(t_item.textKey)}"
+              <p style={{
+                color: "rgba(255,255,255,0.55)",
+                fontSize: "var(--text-xs)",
+                lineHeight: 1.55,
+                marginBottom: "var(--space-2)",
+                display: "-webkit-box",
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden",
+              }}>
+                &ldquo;{getText(t_item.textKey)}&rdquo;
               </p>
-              <div className="text-amber-400/70 text-xs font-medium">{t_item.name}</div>
+              <div style={{ color: "rgba(245,158,11,0.6)", fontSize: "var(--text-xs)", fontWeight: 600 }}>
+                {t_item.name}
+              </div>
             </motion.button>
           ))}
         </div>
+
       </div>
+
+      <style>{`
+        @media (max-width: 479px) {
+          .testimonial-inner { flex-direction: column !important; gap: 1rem !important; }
+          .testimonial-mini-grid { grid-template-columns: repeat(2, 1fr) !important; }
+        }
+        @media (min-width: 480px) and (max-width: 767px) {
+          .testimonial-mini-grid { grid-template-columns: repeat(2, 1fr) !important; }
+        }
+      `}</style>
     </section>
   );
 }
